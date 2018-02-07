@@ -20,7 +20,8 @@ void    print_usage()
 	cout << "\tperiod\t\tnumberof indexes for the moving average" << endl;
 	cout << "\tstandard_dev\tstandard deviation coefficient to apply" << endl;
 	cout << "\tindexes_file\tfile containing daily indexes" << endl;
-	cout << "\tindex_number\tindex number to compute moving average and Bollinger bands" << endl << endl;
+	cout << "\tindex_number\tindex number to compute moving " <<
+		"average and Bollinger bands" << endl << endl;
 	cout << "OPTIONS" << endl;
 	cout << "\t-h\t\tprint the usage and quit." << endl;
 }
@@ -30,11 +31,8 @@ int	main(int ac, char **av)
 	if (ac == 2 && string(av[1]) == "-h") {
 		print_usage();
 		return 0;
-	}
-	if (ac != 5) {
-		cout << "Use -h to see the usage" << endl;
-		return 84;
-	} else if (!isNumber(av[1]) || !isNumber(av[2]) || !isNumber(av[4])) {
+	} else if (ac != 5 || !isNumber(av[1]) ||
+		   !isNumber(av[2]) || !isNumber(av[4])) {
 		cout << "Use -h to see the usage" << endl;
 		return 84;
 	}
