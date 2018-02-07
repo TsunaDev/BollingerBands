@@ -5,7 +5,7 @@
 ## Bollinger's makefile
 ##
 
-SRC		=	src/Main.cpp	\
+SRC		=	src/Main.cpp		\
 			src/Bollinger.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
