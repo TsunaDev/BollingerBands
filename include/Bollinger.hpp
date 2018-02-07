@@ -23,6 +23,14 @@ private:
 	void		setMean();
 	void		setStandardDeviation();
 	void		setBands();
+	const vector<double>	&getValues() const;
+	const size_t		&getIndex() const;
+	const size_t		&getPeriod() const;
+	const double		&getSDCoef() const;
+	const double		&getMean() const;
+	const double		&getSD() const;
+	const double		&getUpperBand() const;
+	const double		&getLowerBand() const;
 	size_t		_period;
 	double		_SDCoef;
 	string		_filename;

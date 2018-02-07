@@ -15,7 +15,11 @@
 Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index) :
 	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index)
 {
-	setValues(filename);
+	try {
+		setValues(filename);
+	} catch (const invalid_argument &e) {
+		throw e;
+	}
 	setMean();
 	setStandardDeviation();
 	setBands();
@@ -24,10 +28,9 @@ Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index
 void	Bollinger::setValues(string filename)
 {
 	ifstream	file(filename);
-	string		err("Can't open file");
 
 	if (!file)
-		throw exception();
+		throw invalid_argument("Can't open file");
 
 	string		content;
 
@@ -66,6 +69,46 @@ void	Bollinger::setBands()
 {
 	_upperBand = _mean + (_SD * _SDCoef);
 	_lowerBand = _mean - (_SD * _SDCoef);
+}
+
+const vector<double>	&Bollinger::getValues() const
+{
+	return _values;
+}
+
+const size_t	&Bollinger::getIndex() const
+{
+	return _index;
+}
+
+const size_t	&Bollinger::getPeriod() const
+{
+	return _period;
+}
+
+const double	&Bollinger::getSDCoef() const
+{
+	return _SDCoef;
+}
+
+const double	&Bollinger::getMean() const
+{
+	return _mean;
+}
+
+const double	&Bollinger::getSD() const
+{
+	return _SD;
+}
+
+const double	&Bollinger::getUpperBand() const
+{
+	return _upperBand;
+}
+
+const double	&Bollinger::getLowerBand() const
+{
+	return _lowerBand;
 }
 
 void	Bollinger::dump()

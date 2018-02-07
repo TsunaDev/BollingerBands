@@ -38,6 +38,10 @@ int	main(int ac, char **av)
 		cout << "Use -h to see the usage" << endl;
 		return 84;
 	}
-	Bollinger	bollinger(atoi(av[1]), stod(av[2]), av[3], atoi(av[4]));
-	bollinger.dump();
+	try {
+		Bollinger	bollinger(atoi(av[1]), stod(av[2]), av[3], atoi(av[4]));
+		bollinger.dump();
+	} catch (const invalid_argument &e) {
+		cout << "Error: " << e.what() << endl;
+	}
 }
