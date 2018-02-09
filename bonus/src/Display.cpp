@@ -46,7 +46,7 @@ void	Display::start(int width, int height)
 	window.setFramerateLimit(60);
 	setMeanVertices();
 	sf::View	view(sf::Vector2f((float)width * 2.0f, (float)_middle),
-			     sf::Vector2f((float)width * 4.0f, 16000.0f));
+			     sf::Vector2f((float)width * 4.0f, 32000.0f));
 //	view.setCenter(0, (int)_middle);
 	window.setView(view);
 	window.draw(&_meanVertices[0], _meanVertices.size(), sf::Lines);
@@ -76,7 +76,8 @@ void	Display::dumpBands()
 {
 	cout << "max" << _maxBand << endl;
 	cout << "min" << _minBand << endl;
-	for (size_t idx = 0; idx <= _bollinger.getMaxIndex() - _bollinger.getDefaultIndex(); idx++) {
+	for (size_t idx = 0; idx <= _bollinger.getMaxIndex() -
+		     _bollinger.getDefaultIndex(); idx++) {
 		cout << "idx : " << idx << endl;
 		cout << "upper : " << _upperBand[idx] << endl;
 		cout << "lower : " << _lowerBand[idx] << endl;

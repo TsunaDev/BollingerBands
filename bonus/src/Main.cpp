@@ -42,7 +42,7 @@ int	main(int ac, char **av)
 		bollinger.dump();
 		Display	display(bollinger);
 		display.dumpBands();
-		display.start(800, 600);
+		display.start(1920, 1080);
 	} catch (const invalid_argument &e) {
 		cout << "Error: " << e.what() << endl;
 	}

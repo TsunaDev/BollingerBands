@@ -13,7 +13,7 @@
 #include "Bollinger.hpp"
 
 Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index) :
-	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index)
+	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index), _defIndex(index)
 {
 	try {
 		setValues(filename);
@@ -36,15 +36,19 @@ void	Bollinger::setValues(string filename)
 
 	while (getline(file, content))
 		_values.push_back(stod(content));
+	_maxIndex = _values.size() - 1;
 	file.close();
 }
 
-void	Bollinger::changeIndex(size_t index)
+bool	Bollinger::changeIndex(size_t index)
 {
+	if (index > _maxIndex)
+		return false;
 	_index = index;
 	setMean();
 	setStandardDeviation();
 	setBands();
+	return true;
 }
 
 void	Bollinger::setMean()
@@ -85,6 +89,16 @@ const vector<double>	&Bollinger::getValues() const
 const size_t	&Bollinger::getIndex() const
 {
 	return _index;
+}
+
+const size_t	&Bollinger::getMaxIndex() const
+{
+	return _maxIndex;
+}
+
+const size_t	&Bollinger::getDefaultIndex() const
+{
+	return _defIndex;
 }
 
 const size_t	&Bollinger::getPeriod() const
