@@ -13,7 +13,7 @@
 #include "Bollinger.hpp"
 
 Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index) :
-	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index)
+	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index), _defIndex(index)
 {
 	try {
 		setValues(filename);
@@ -36,33 +36,43 @@ void	Bollinger::setValues(string filename)
 
 	while (getline(file, content))
 		_values.push_back(stod(content));
+	_maxIndex = _values.size() - 1;
 	file.close();
 }
 
-void	Bollinger::changeIndex(size_t index)
+bool	Bollinger::changeIndex(size_t index)
 {
+	if (index > _maxIndex)
+		return false;
 	_index = index;
 	setMean();
 	setStandardDeviation();
 	setBands();
+	return true;
 }
 
 void	Bollinger::setMean()
 {
 	double	sum = 0.0;
+	int	start = _index - _period + 1;
 
-	for (size_t idx = _index - _period + 1; idx <= _index; idx++)
+	if (start < 0)
+		start = 0;
+	for (size_t idx = (size_t)start; idx <= _index; idx++)
 		sum += _values[idx];
-	_mean = sum / (double)_period;
+	_mean = sum / (double)(_index - (size_t)start + 1);
 }
 
 void	Bollinger::setStandardDeviation()
 {
 	double	sum = 0.0;
+	int	start = _index - _period + 1;
 
-	for (size_t idx = _index - _period + 1; idx <= _index; idx++)
+	if (start < 0)
+		start = 0;
+	for (size_t idx = (size_t)start; idx <= _index; idx++)
 		sum += pow(_values[idx] - _mean, 2);
-	_SD = sqrt(sum / (double)_period);
+	_SD = sqrt(sum / (double)(_index - (size_t)start + 1));
 }
 
 void	Bollinger::setBands()
@@ -79,6 +89,16 @@ const vector<double>	&Bollinger::getValues() const
 const size_t	&Bollinger::getIndex() const
 {
 	return _index;
+}
+
+const size_t	&Bollinger::getMaxIndex() const
+{
+	return _maxIndex;
+}
+
+const size_t	&Bollinger::getDefaultIndex() const
+{
+	return _defIndex;
 }
 
 const size_t	&Bollinger::getPeriod() const

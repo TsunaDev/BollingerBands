@@ -6,7 +6,8 @@
 ##
 
 SRC		=	src/Main.cpp		\
-			src/Bollinger.cpp
+			src/Bollinger.cpp	\
+			src/Display.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
 
@@ -16,8 +17,11 @@ NAME		=	bollinger
 
 all:	$(NAME)
 
+debug:	CXXFLAGS += -ggdb3
+debug:	fclean all
+
 $(NAME):	$(OBJ)
-	g++ $(OBJ) -o $(NAME)
+	g++ $(OBJ) -o $(NAME) -lsfml-graphics -lsfml-window -lsfml-system
 
 clean:
 	rm -f $(OBJ)

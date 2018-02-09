@@ -10,7 +10,7 @@ SRC		=	src/Main.cpp		\
 
 OBJ		=	$(SRC:.cpp=.o)
 
-CXXFLAGS	=	-W -Wall -Werror -Iinclude
+CXXFLAGS	=	-W -Wall -Werror -Iinclude -ggdb3
 
 NAME		=	bollinger
 

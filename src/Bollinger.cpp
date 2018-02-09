@@ -50,19 +50,25 @@ void	Bollinger::changeIndex(size_t index)
 void	Bollinger::setMean()
 {
 	double	sum = 0.0;
+	int	start = _index - _period + 1;
 
-	for (size_t idx = _index - _period + 1; idx <= _index; idx++)
+	if (start < 0)
+		start = 0;
+	for (size_t idx = (size_t)start; idx <= _index; idx++)
 		sum += _values[idx];
-	_mean = sum / (double)_period;
+	_mean = sum / (double)(_index - (size_t)start + 1);
 }
 
 void	Bollinger::setStandardDeviation()
 {
 	double	sum = 0.0;
+	int	start = _index - _period + 1;
 
-	for (size_t idx = _index - _period + 1; idx <= _index; idx++)
+	if (start < 0)
+		start = 0;
+	for (size_t idx = (size_t)start; idx <= _index; idx++)
 		sum += pow(_values[idx] - _mean, 2);
-	_SD = sqrt(sum / (double)_period);
+	_SD = sqrt(sum / (double)(_index - (size_t)start + 1));
 }
 
 void	Bollinger::setBands()
