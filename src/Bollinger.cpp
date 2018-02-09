@@ -23,6 +23,7 @@ Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index
 	setMean();
 	setStandardDeviation();
 	setBands();
+	//errorHandling();
 }
 
 void	Bollinger::setValues(string filename)
@@ -38,6 +39,10 @@ void	Bollinger::setValues(string filename)
 		_values.push_back(stod(content));
 	_maxIndex = _values.size() - 1;
 	file.close();
+	if (_period > _maxIndex)
+		exit(84);
+	else if (_defIndex > _maxIndex)
+		exit(84);
 }
 
 bool	Bollinger::changeIndex(size_t index)
@@ -144,3 +149,8 @@ void	Bollinger::dump()
 	cout << "B+: " << fixed << setprecision(2) << _upperBand << endl;
 	cout << "B-: " << fixed << setprecision(2) << _lowerBand << endl;
 }
+
+/*void	Bollinger::errorHandling()
+{
+
+}*/
