@@ -35,12 +35,12 @@ void print_usage()
 
 int main(int ac, char **av)
 {
-	if (ac == 2 && string(av[1]) == "-h") {
+	if (ac == 2 && (string(av[1]) == "-h" || string(av[1]) == "--help")) {
 		print_usage();
 		return 0;
 	} else if (ac != 5 || !isNumber(av[1]) || !isNumber(av[2]) ||
 		!isNumber(av[4]) || !isIntOrNeg(av[1]) || !isIntOrNeg(av[4])) {
-		cout << "Use -h to see the usage" << endl;
+		cerr << "Use -h to see the usage" << endl;
 		return 84;
 	}
 	try {
@@ -48,6 +48,7 @@ int main(int ac, char **av)
 			atoi(av[4]));
 		bollinger.dump();
 	} catch (const invalid_argument &e) {
-		cout << "Error: " << e.what() << endl;
+		cerr << "Error: " << e.what() << endl;
+		return 84;
 	}
 }

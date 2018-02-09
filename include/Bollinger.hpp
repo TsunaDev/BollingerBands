@@ -17,7 +17,6 @@ class	Bollinger {
 public:
 	Bollinger(size_t, double, string, size_t);
 	void	dump();
-	//void	errorHandling();
 	bool	changeIndex(size_t);
 	const vector<double>	&getValues() const;
 	const size_t		&getIndex() const;

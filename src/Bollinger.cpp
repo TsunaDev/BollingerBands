@@ -12,8 +12,10 @@
 #include <cmath>
 #include "Bollinger.hpp"
 
-Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index) :
-	_period(period), _SDCoef(SDCoef), _filename(filename), _index(index), _defIndex(index)
+Bollinger::Bollinger(size_t period, double SDCoef, string filename,
+	size_t index
+) : _period(period), _SDCoef(SDCoef), _filename(filename), _index(index),
+	_defIndex(index)
 {
 	try {
 		setValues(filename);
@@ -26,26 +28,28 @@ Bollinger::Bollinger(size_t period, double SDCoef, string filename, size_t index
 	//errorHandling();
 }
 
-void	Bollinger::setValues(string filename)
+void Bollinger::setValues(string filename)
 {
-	ifstream	file(filename);
+	ifstream file(filename);
 
 	if (!file)
 		throw invalid_argument("Can't open file");
 
-	string		content;
+	string content;
 
 	while (getline(file, content))
 		_values.push_back(stod(content));
 	_maxIndex = _values.size() - 1;
 	file.close();
 	if (_period > _maxIndex)
-		exit(84);
+		throw invalid_argument(
+			"Period is higher than the total number of indexes from the file");
 	else if (_defIndex > _maxIndex)
-		exit(84);
+		throw invalid_argument(
+			"The index number is higher than the total number of indexes from the file");
 }
 
-bool	Bollinger::changeIndex(size_t index)
+bool Bollinger::changeIndex(size_t index)
 {
 	if (index > _maxIndex)
 		return false;
@@ -56,10 +60,10 @@ bool	Bollinger::changeIndex(size_t index)
 	return true;
 }
 
-void	Bollinger::setMean()
+void Bollinger::setMean()
 {
-	double	sum = 0.0;
-	int	start = _index - _period + 1;
+	double sum = 0.0;
+	int start = _index - _period + 1;
 
 	if (start < 0)
 		start = 0;
@@ -68,10 +72,10 @@ void	Bollinger::setMean()
 	_mean = sum / (double)(_index - (size_t)start + 1);
 }
 
-void	Bollinger::setStandardDeviation()
+void Bollinger::setStandardDeviation()
 {
-	double	sum = 0.0;
-	int	start = _index - _period + 1;
+	double sum = 0.0;
+	int start = _index - _period + 1;
 
 	if (start < 0)
 		start = 0;
@@ -80,68 +84,69 @@ void	Bollinger::setStandardDeviation()
 	_SD = sqrt(sum / (double)(_index - (size_t)start + 1));
 }
 
-void	Bollinger::setBands()
+void Bollinger::setBands()
 {
 	_upperBand = _mean + (_SD * _SDCoef);
 	_lowerBand = _mean - (_SD * _SDCoef);
 }
 
-const vector<double>	&Bollinger::getValues() const
+const vector<double> &Bollinger::getValues() const
 {
 	return _values;
 }
 
-const size_t	&Bollinger::getIndex() const
+const size_t &Bollinger::getIndex() const
 {
 	return _index;
 }
 
-const size_t	&Bollinger::getMaxIndex() const
+const size_t &Bollinger::getMaxIndex() const
 {
 	return _maxIndex;
 }
 
-const size_t	&Bollinger::getDefaultIndex() const
+const size_t &Bollinger::getDefaultIndex() const
 {
 	return _defIndex;
 }
 
-const size_t	&Bollinger::getPeriod() const
+const size_t &Bollinger::getPeriod() const
 {
 	return _period;
 }
 
-const double	&Bollinger::getSDCoef() const
+const double &Bollinger::getSDCoef() const
 {
 	return _SDCoef;
 }
 
-const double	&Bollinger::getMean() const
+const double &Bollinger::getMean() const
 {
 	return _mean;
 }
 
-const double	&Bollinger::getSD() const
+const double &Bollinger::getSD() const
 {
 	return _SD;
 }
 
-const double	&Bollinger::getUpperBand() const
+const double &Bollinger::getUpperBand() const
 {
 	return _upperBand;
 }
 
-const double	&Bollinger::getLowerBand() const
+const double &Bollinger::getLowerBand() const
 {
 	return _lowerBand;
 }
 
-void	Bollinger::dump()
+void Bollinger::dump()
 {
 	cout << "INPUT" << endl;
 	cout << "Index: " << _index << endl;
 	cout << "Period: " << _period << endl;
-	cout << "SD_coef: " << fixed << setprecision(2) << _SDCoef << endl << endl;
+	cout << "SD_coef: " << fixed << setprecision(2) << _SDCoef << endl
+		<< endl;
 
 	cout << "OUTPUT" << endl;
 	cout << "MA: " << fixed << setprecision(2) << _mean << endl;
@@ -149,8 +154,3 @@ void	Bollinger::dump()
 	cout << "B+: " << fixed << setprecision(2) << _upperBand << endl;
 	cout << "B-: " << fixed << setprecision(2) << _lowerBand << endl;
 }
-
-/*void	Bollinger::errorHandling()
-{
-
-}*/
